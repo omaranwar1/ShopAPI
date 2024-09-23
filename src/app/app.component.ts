@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {RouterLink, RouterModule } from '@angular/router';  // Import RouterModule
+import { ProductComponent } from './components/product/product.component';
+import { HttpClientModule } from '@angular/common/http';  
+import { CartComponent } from './components/cart/cart.component';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [HttpClientModule,RouterModule, ProductComponent, RouterLink , CartComponent]  // Add RouterModule to imports
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'shopping-cart-app';
+
+  ngOnInit() {
+  }
 }

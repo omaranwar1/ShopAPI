@@ -1,0 +1,25 @@
+<div *ngIf="cart != null" class="container mt-4">
+  <h2 class="mb-4">Cart</h2>
+  <ul class="list-group">
+    <li *ngFor="let item of cart.cartItems" class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <img [src]="item.imageURL" alt="{{ item.name }}" class="img-thumbnail mr-3" style="width: 100px; height: 100px;">
+        <div>
+          <h5 class="mb-1">{{ item.name }}</h5>
+          <span>{{ item.quantity }} x {{ item.price | currency }}</span>
+        </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <button class="btn btn-lg btn-primary mr-4" (click)="increaseQuantity(item)">+</button>
+        <button class="btn btn-lg btn-secondary ml-4 mr-4" (click)="decreaseQuantity(item)">-</button>
+        <button class="btn btn-lg btn-danger ml-4" (click)="deleteItem(item.productId)">Delete</button>
+      </div>
+    </li>
+  </ul>
+  <p *ngIf="cart.cartItems && cart.cartItems.length === 0" class="mt-4">No items in the cart.</p>
+  <p class="mt-4 total-price">Total Price: {{ totalPrice | currency }}</p>
+  <button class="btn btn-lg btn-success mt-4" (click)="purchaseCart()">Purchase</button>
+</div>
+<div *ngIf="cart == null" class="container mt-4">
+  <p>Loading cart...</p>
+</div>
