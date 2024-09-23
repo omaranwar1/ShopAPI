@@ -1,6 +1,6 @@
 public interface IProductService
 {
-    Task<IEnumerable<Product>> GetProductsAsync(string searchTerm);
+    Task<IEnumerable<Product>> GetProductsAsync(string searchTerm, int pageNumber, int pageSize, string sortBy, string sortDirection);
     Task<IEnumerable<Product>> GetProductsAsync();            // Retrieve all products
     Task<Product> GetProductByIdAsync(int id);                // Retrieve a specific product by ID
     Task AddProductAsync(Product product);                    // Add a new product

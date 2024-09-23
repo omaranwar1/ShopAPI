@@ -9,11 +9,11 @@ public class ProductService : IProductService
         _productRepository = productRepository;
     }
 
-    public async Task<IEnumerable<Product>> GetProductsAsync(string searchTerm)
+    public async Task<IEnumerable<Product>> GetProductsAsync(string searchTerm = "", int pageNumber = 1, int pageSize = 6, string sortBy = "name", string sortDirection = "asc")
     {
-        return await _productRepository.GetProductsAsync(searchTerm);  // Execute the query and get the results
+        // Call the repository method with the provided parameters
+        return await _productRepository.GetProductsAsync(searchTerm, pageNumber, pageSize, sortBy, sortDirection);
     }
-
 
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {

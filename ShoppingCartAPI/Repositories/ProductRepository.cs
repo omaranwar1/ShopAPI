@@ -12,16 +12,34 @@ public class ProductRepository : IProductRepository
     }
 
 
-    public async Task<IEnumerable<Product>> GetProductsAsync(string searchTerm = "")
+    public async Task<IEnumerable<Product>> GetProductsAsync(string searchTerm = "", int pageNumber = 1, int pageSize = 6, string sortBy = "name", string sortDirection = "asc")
     {
         searchTerm = searchTerm.ToLower();
 
-        var products = from product in _context.Products
-                       where string.IsNullOrEmpty(searchTerm) || product.Name.ToLower().StartsWith(searchTerm)
-                       select product;
+        var productsQuery = from product in _context.Products
+                            where string.IsNullOrEmpty(searchTerm) || product.Name.ToLower().StartsWith(searchTerm)
+                            select product;
 
-        return await products.ToListAsync();
+        switch (sortBy.ToLower())
+        {
+            case "price":
+                productsQuery = sortDirection.ToLower() == "desc"
+                    ? productsQuery.OrderByDescending(p => p.Price)
+                    : productsQuery.OrderBy(p => p.Price);
+                break;
+            default:
+                productsQuery = sortDirection.ToLower() == "desc"
+                    ? productsQuery.OrderByDescending(p => p.Name)
+                    : productsQuery.OrderBy(p => p.Name);
+                break;
+        }
+
+        productsQuery = productsQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+      
+        return await productsQuery.ToListAsync();
     }
+
 
     public async Task<IEnumerable<Product>> GetAllProductsAsync()
     {

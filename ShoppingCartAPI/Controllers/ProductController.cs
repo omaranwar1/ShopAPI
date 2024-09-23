@@ -17,13 +17,37 @@ namespace ShoppingCartApp.Controllers
             _productService = productService;
         }
 
-        // GET: api/product
         [HttpGet]
-        public async Task<IEnumerable<Product>> GetProducts([FromQuery] string searchTerm = "")
+        public async Task<IActionResult> GetProducts(
+          [FromQuery] string searchTerm = "",
+          [FromQuery] int pageNumber = 1, // Default page number is 1
+          [FromQuery] int pageSize = 6,  // Default page size is 10
+          [FromQuery] string sortBy = "name",  // Default sort by 'name'
+          [FromQuery] string sortDirection = "asc" // Default sort direction is ascending
+           )
         {
-            var products = await _productService.GetProductsAsync(searchTerm);
-            return products;
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                return BadRequest("Page number and page size must be greater than zero.");
+            }
+
+            var products = await _productService.GetProductsAsync(searchTerm, pageNumber, pageSize, sortBy, sortDirection);
+
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(products);
         }
+
+        //// GET: api/product
+        //[HttpGet]
+        //public async Task<IEnumerable<Product>> GetProducts([FromQuery] string searchTerm = "")
+        //{
+        //    var products = await _productService.GetProductsAsync(searchTerm);
+        //    return products;
+        //}
 
  
         // GET: api/product/5
